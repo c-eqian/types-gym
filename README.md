@@ -1,6 +1,11 @@
- # typescript类型体操
+# typescript类型体操
+
  > 避免与`typescript`内置类型冲突，这里的实现都以`Q`开头
-## Pick
+参考来源[type-challenges](https://github.com/type-challenges/type-challenges/blob/main/README.zh-CN.md)
+
+## 基础版
+
+### Pick
 
 根据给定的类型`T`，提取`P`中出现的类型
 
@@ -25,7 +30,7 @@ const todo: User = {
 
 ```
 
-## Exclude
+### Exclude
 
 `QExclude<UnionType, ExcludedMembers>`在联合类型`UnionType`中，**排除**掉与`ExcludedMembers`具有交叉的类型
 
@@ -38,7 +43,7 @@ export type QExclude<U, E extends U> = U extends E ? never: U
  // type T0 = "b" | "c"
 ```
 
-## Omit
+### Omit
 
 从类型`T`中，剔除在`P`中出现的类型
 
@@ -61,7 +66,7 @@ export type QOmit<T extends object, E extends keyof T> = {[K in keyof T as K ext
  }
 ```
 
-## Extract
+### Extract
 
 与`QExclude`相反，在联合类型`UnionType`中，**提取**与`IncludedMembers`具有交叉的类型
 
@@ -74,7 +79,7 @@ type T0 = QExtract<"a" | "b" | "c", "a">;
 // type T0 = "a"
 ```
 
-## Partial
+### Partial
 
 将类型`T`的所有属性设置为可选类型
 
@@ -95,7 +100,7 @@ type T0 = QPartial<Todo>
 
 
 
-## Required
+### Required
 
 与`Partial`相反，将类型`T`所有属性设置为必选
 
@@ -117,7 +122,7 @@ type T0=  QRequired<Todo>
 
 
 
-## NonNullable
+### NonNullable
 
 通过从 `U` 中排除 `null` 和 `undefined` 来构造一个类型。
 
@@ -130,7 +135,7 @@ type T0 = QNonNullable<string | number | undefined>;
 // type T0 = string | number
 ```
 
-## Parameters
+### Parameters
 
 从一个函数中提取该函数的参数类型
 
@@ -151,7 +156,7 @@ type T1 = QParameters<(name:string)=> void>;
 
 
 
-## ReturnType
+### ReturnType
 
 一个构造函数中提取该函数的额返回类型，对于重载函数，这将是最后一个签名的返回类型
 
@@ -165,3 +170,6 @@ type T0 = QReturnType<() => string>;
 // type T0 = string
 ```
 
+## 升级版
+
+## 变态版
