@@ -171,5 +171,54 @@ type T0 = QReturnType<() => string>;
 ```
 
 ## 升级版
+### QEventsProps
+将类型`E`中提取指定`P`属性转为事件类型，当P继承于`null`时，将转换全部
+```typescript
+// 辅助类型
+type CapitalizeEvents<T> = {
+    [K in keyof T as `on${Capitalize<string & K>}`]: T[K]
+};
 
+export type QEventsProps<E extends object, P extends keyof E | null> =
+    P extends null ? CapitalizeEvents<E> :
+        P extends keyof E ? CapitalizeEvents<QPick<E, P>> : never;
+```
+```typescript
+type Props = {
+    click: (e: MouseEvent) => void;
+    selected: (e: MouseEvent) => void;
+}
+type P0= QEventsProps<Props, null>
+// type P0 = {onClick: (e: MouseEvent) => void, onSelected: (e: MouseEvent) => void}
+
+type P1= QEventsProps<Props, 'click'>
+// type P0 = {onClick: (e: MouseEvent) => void}
+
+```
+### QStartWith
+检查某个字符串类型`S`是否以`P`开头，返回`true/false`
+```typescript
+export type QStartWith<S extends string,P extends string> = S extends `${P}${infer R}` ? true  : false;
+
+```
+```typescript
+type P0 = QStartWith<'onClick', 'on'>
+// type P0 = true
+
+type P1 = QStartWith<'onClick', 'a'>
+// type P0 = false
+```
+### QEndWith
+与`QStartWith`相反，检查某个字符串类型`S`是否以`E`结尾，返回`true/false`
+```typescript
+export type QEndWith<S extends string,E extends string> = S extends `${infer R}${E}` ? true  : false;
+
+```
+```typescript
+type P0 = QEndWith<'onClick', 'on'>
+// type P0 = true
+
+type P1 = QEndWith<'onClick', 'a'>
+// type P0 = false
+```
 ## 变态版
