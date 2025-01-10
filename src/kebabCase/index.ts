@@ -33,4 +33,4 @@ type F2 = QKebabCase<"foo-bar-baz">
 // type F2 = "foo-bar-baz"
 
 type F3 = QKebabCase<"foobarbaz">
-// type F3 = ""foobarbaz""
+// type F3 = "foobarbaz"
